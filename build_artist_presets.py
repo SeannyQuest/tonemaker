@@ -102,8 +102,15 @@ def build(name, spec):
     tone = doc['data']['tone']
     s0 = spec['snaps'][0]
     ampM, ampP = spec['amp']; cabM, cabP = spec['cab']; preM, preP = spec['pre']
+    # Preamp models are much quieter than full Amp models (no power-amp stage):
+    # compensate with more Master, channel volume, and output gain.
+    is_preamp = ampM.startswith('HD2_Preamp')
+    cbst = 0.15 if is_preamp else 0.0
+    if is_preamp:
+        ampP = dict(ampP, Master=0.70)
+    outgain = 12.0 if is_preamp else 6.0
     # base controlled-param values = snapshot 0
-    ampP = dict(ampP, Drive=s0[2], ChVol=s0[3])
+    ampP = dict(ampP, Drive=s0[2], ChVol=min(1.0, s0[3] + cbst))
     dsp0 = {
         'input': copy.deepcopy(INPUT_TMPL), 'output': copy.deepcopy(OUTPUT_TMPL),
         'block0': blk('HD2_VolPanVolStereo', 0, True, {}),
@@ -118,7 +125,7 @@ def build(name, spec):
         'block9': blk('HD2_FXLoopStereo1_2', 9, False, {}),
     }
     dsp0['input'].update(noiseGate=True, threshold=-58, decay=0.3)
-    dsp0['output']['gain'] = 6.0
+    dsp0['output']['gain'] = outgain
     tone['dsp0'] = dsp0
     # controller wiring: these params vary by snapshot (controller 11)
     tone['controller'] = {'dsp0': {
@@ -140,7 +147,7 @@ def build(name, spec):
                 'block7': bool(byp['reverb']), 'block8': False, 'block9': False}},
             'controllers': {'dsp0': {
                 'block2': {'Drive': {'@fs_enabled': False, '@value': drive},
-                           'ChVol': {'@fs_enabled': False, '@value': chvol}},
+                           'ChVol': {'@fs_enabled': False, '@value': min(1.0, chvol + cbst)}},
                 'block6': {'Mix': {'@fs_enabled': False, '@value': dlymix}},
                 'block7': {'Mix': {'@fs_enabled': False, '@value': revmix}}}},
         }
