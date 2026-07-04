@@ -12,7 +12,11 @@ interface, but its preset files (`.pgp`) are editable JSON, so this tool reads, 
 ## ▶ Try it now — no install, no signup
 
 **[seannyquest.github.io/tonemaker](https://seannyquest.github.io/tonemaker/)** — the full builder in
-your browser. Nothing is uploaded; it all runs on your machine. Three tabs:
+your browser. Nothing is uploaded; it all runs on your machine.
+
+[![The tonemaker tone library — ready-made POD Go tones by genre](docs/assets/tone-library.png)](https://seannyquest.github.io/tonemaker/)
+
+Three tabs:
 
 - **Tone library** — ready-made, fully dialed tones across clean, blues, rock, country, jazz, funk,
   surf, ambient and metal. Filter by genre, download, drag into POD Go Edit. No AI, no account.
