@@ -1,44 +1,380 @@
 {
   "_note": "VERIFIED POD Go internal model IDs + parameter keys, extracted from real device exports (reference/logic.pgp, reference/Test.pgp). POD Go uses Mono/Stereo suffixes that the full Helix-Native ID list omits -- bare IDs like HD2_DistTriangleFuzz FAIL to import. Add new entries only from real POD Go exports. Param value notes: amp/fuzz/reverb/chorus knobs are normalized 0.0-1.0 unless marked; EQ freq=Hz, gain=dB, Q~0.707; output gain & EQ Level = dB; gate threshold = dB.",
   "amp": {
-    "HD2_AmpCaliRectifire": {"name": "Cali Rectifire (Mesa Dual Rectifier)", "type": 1, "extra_fields": ["@bypassvolume"], "params": ["Drive", "Bass", "Mid", "Treble", "Presence", "Master", "ChVol", "Sag", "Hum", "Ripple", "Bias", "BiasX"]},
-    "HD2_AmpUSDoubleNrm": {"name": "US Double Nrm (Fender Twin)", "type": 1, "extra_fields": ["@bypassvolume"], "params": ["Drive", "Bass", "Mid", "Treble", "Presence", "Master", "ChVol", "Sag", "Hum", "Ripple", "Bias", "BiasX"]},
-    "HD2_PreampPVPanama": {"name": "PV Panama PREAMP (Peavey 5150)", "type": 1, "extra_fields": ["@bypassvolume"], "params": ["Drive", "Bass", "Mid", "Treble", "Master", "ChVol", "Sag", "Hum"], "note": "preamp model = reduced param set, NO Presence"},
-    "HD2_PreampBrit2204": {"name": "Brit 2204 PREAMP (Marshall JCM800)", "type": 1, "extra_fields": ["@bypassvolume"], "params": ["Drive", "Bass", "Mid", "Treble", "Master", "ChVol", "Sag", "Hum"], "note": "preamp model = reduced param set, NO Presence"}
+    "HD2_AmpCaliRectifire": {
+      "name": "Cali Rectifire (Mesa Dual Rectifier)",
+      "type": 1,
+      "extra_fields": [
+        "@bypassvolume"
+      ],
+      "params": [
+        "Drive",
+        "Bass",
+        "Mid",
+        "Treble",
+        "Presence",
+        "Master",
+        "ChVol",
+        "Sag",
+        "Hum",
+        "Ripple",
+        "Bias",
+        "BiasX"
+      ]
+    },
+    "HD2_AmpUSDoubleNrm": {
+      "name": "US Double Nrm (Fender Twin)",
+      "type": 1,
+      "extra_fields": [
+        "@bypassvolume"
+      ],
+      "params": [
+        "Drive",
+        "Bass",
+        "Mid",
+        "Treble",
+        "Presence",
+        "Master",
+        "ChVol",
+        "Sag",
+        "Hum",
+        "Ripple",
+        "Bias",
+        "BiasX"
+      ]
+    },
+    "HD2_PreampPVPanama": {
+      "name": "PV Panama PREAMP (Peavey 5150)",
+      "type": 1,
+      "extra_fields": [
+        "@bypassvolume"
+      ],
+      "params": [
+        "Drive",
+        "Bass",
+        "Mid",
+        "Treble",
+        "Master",
+        "ChVol",
+        "Sag",
+        "Hum"
+      ],
+      "note": "preamp model = reduced param set, NO Presence"
+    },
+    "HD2_PreampBrit2204": {
+      "name": "Brit 2204 PREAMP (Marshall JCM800)",
+      "type": 1,
+      "extra_fields": [
+        "@bypassvolume"
+      ],
+      "params": [
+        "Drive",
+        "Bass",
+        "Mid",
+        "Treble",
+        "Master",
+        "ChVol",
+        "Sag",
+        "Hum"
+      ],
+      "note": "preamp model = reduced param set, NO Presence"
+    }
   },
   "cab": {
-    "HD2_CabMicIr_4x12CaliV30": {"name": "4x12 Cali V30", "type": 0, "params": ["Position", "LowCut", "Mic", "Angle", "Distance", "HighCut", "Level"], "units": {"LowCut": "Hz", "HighCut": "Hz", "Angle": "deg", "Distance": "in", "Position": "0-1", "Mic": "index"}},
-    "HD2_CabMicIr_4x12BritV30": {"name": "4x12 Brit V30 (Marshall 1960)", "type": 0, "params": ["Position", "LowCut", "Mic", "Angle", "Distance", "HighCut", "Level"], "units": {"LowCut": "Hz", "HighCut": "Hz", "Angle": "deg", "Distance": "in", "Position": "0-1", "Mic": "index"}},
-    "HD2_Cab2x12DoubleC12N": {"name": "2x12 Double C12N (Fender Twin Jensen)", "type": 2, "extra_fields": ["@mic"], "params": ["Level", "LowCut", "Distance", "EarlyReflections", "HighCut"]}
+    "HD2_CabMicIr_4x12CaliV30": {
+      "name": "4x12 Cali V30",
+      "type": 0,
+      "params": [
+        "Position",
+        "LowCut",
+        "Mic",
+        "Angle",
+        "Distance",
+        "HighCut",
+        "Level"
+      ],
+      "units": {
+        "LowCut": "Hz",
+        "HighCut": "Hz",
+        "Angle": "deg",
+        "Distance": "in",
+        "Position": "0-1",
+        "Mic": "index"
+      }
+    },
+    "HD2_CabMicIr_4x12BritV30": {
+      "name": "4x12 Brit V30 (Marshall 1960)",
+      "type": 0,
+      "params": [
+        "Position",
+        "LowCut",
+        "Mic",
+        "Angle",
+        "Distance",
+        "HighCut",
+        "Level"
+      ],
+      "units": {
+        "LowCut": "Hz",
+        "HighCut": "Hz",
+        "Angle": "deg",
+        "Distance": "in",
+        "Position": "0-1",
+        "Mic": "index"
+      }
+    },
+    "HD2_Cab2x12DoubleC12N": {
+      "name": "2x12 Double C12N (Fender Twin Jensen)",
+      "type": 2,
+      "extra_fields": [
+        "@mic"
+      ],
+      "params": [
+        "Level",
+        "LowCut",
+        "Distance",
+        "EarlyReflections",
+        "HighCut"
+      ]
+    }
   },
   "eq": {
-    "HD2_EQ_STATIC_ParametricStereo": {"name": "Parametric EQ", "type": 0, "params": ["LowCut", "HighCut", "LowFreq", "LowGain", "LowQ", "MidFreq", "MidGain", "MidQ", "HighFreq", "HighGain", "HighQ", "Level"], "units": {"*Freq": "Hz", "*Cut": "Hz", "*Gain": "dB", "*Q": "~0.707", "Level": "dB"}},
-    "HD2_EQ_STATIC_SimpleTiltStereo": {"name": "Simple Tilt EQ", "type": 0, "params": ["Tilt", "CenterFreq", "Level"]}
+    "HD2_EQ_STATIC_ParametricStereo": {
+      "name": "Parametric EQ",
+      "type": 0,
+      "params": [
+        "LowCut",
+        "HighCut",
+        "LowFreq",
+        "LowGain",
+        "LowQ",
+        "MidFreq",
+        "MidGain",
+        "MidQ",
+        "HighFreq",
+        "HighGain",
+        "HighQ",
+        "Level"
+      ],
+      "units": {
+        "*Freq": "Hz",
+        "*Cut": "Hz",
+        "*Gain": "dB",
+        "*Q": "~0.707",
+        "Level": "dB"
+      }
+    },
+    "HD2_EQ_STATIC_SimpleTiltStereo": {
+      "name": "Simple Tilt EQ",
+      "type": 0,
+      "params": [
+        "Tilt",
+        "CenterFreq",
+        "Level"
+      ]
+    }
   },
   "distortion": {
-    "HD2_DistTriangleFuzzMono": {"name": "Triangle Fuzz (Big Muff)", "type": 0, "params": ["Sustain", "Tone", "Level"]},
-    "HD2_DistScream808Mono": {"name": "Scream 808 (Ibanez TS808)", "type": 0, "params": ["Gain", "Tone", "Level"], "note": "boost in front: low Gain, high Level, mid Tone to tighten downtuned riffs"},
-    "HD2_DistMinotaurMono": {"name": "Minotaur (Klon Centaur)", "type": 0, "params": ["Gain", "Tone", "Level"]}
+    "HD2_DistTriangleFuzzMono": {
+      "name": "Triangle Fuzz (Big Muff)",
+      "type": 0,
+      "params": [
+        "Sustain",
+        "Tone",
+        "Level"
+      ]
+    },
+    "HD2_DistScream808Mono": {
+      "name": "Scream 808 (Ibanez TS808)",
+      "type": 0,
+      "params": [
+        "Gain",
+        "Tone",
+        "Level"
+      ],
+      "note": "boost in front: low Gain, high Level, mid Tone to tighten downtuned riffs"
+    },
+    "HD2_DistMinotaurMono": {
+      "name": "Minotaur (Klon Centaur)",
+      "type": 0,
+      "params": [
+        "Gain",
+        "Tone",
+        "Level"
+      ]
+    }
   },
   "modulation": {
-    "HD2_Chorus70sChorusStereo": {"name": "70s Chorus (CE-1)", "type": 0, "params": ["Mix", "ChorusIntensity", "VibratoDepth", "VibratoRate", "Spread", "Stereo", "Mode", "Level", "Headroom", "SyncSelect1", "SyncSelect2", "TempoSync1", "TempoSync2"], "bool_params": ["Stereo", "Mode", "TempoSync1", "TempoSync2"]}
+    "HD2_Chorus70sChorusStereo": {
+      "name": "70s Chorus (CE-1)",
+      "type": 0,
+      "params": [
+        "Mix",
+        "ChorusIntensity",
+        "VibratoDepth",
+        "VibratoRate",
+        "Spread",
+        "Stereo",
+        "Mode",
+        "Level",
+        "Headroom",
+        "SyncSelect1",
+        "SyncSelect2",
+        "TempoSync1",
+        "TempoSync2"
+      ],
+      "bool_params": [
+        "Stereo",
+        "Mode",
+        "TempoSync1",
+        "TempoSync2"
+      ]
+    }
   },
   "delay": {
-    "HD2_DelayTransistorTapeStereo": {"name": "Transistor Tape (Maestro EP)", "type": 5, "extra_fields": ["@trails"], "params": ["Time", "Feedback", "Mix", "WowFlutter", "Spread", "Scale", "Level", "SyncSelect1", "TempoSync1", "Headroom"], "units": {"Time": "0-1", "Feedback": "0-1", "Mix": "0-1", "Level": "dB"}}
+    "HD2_DelayTransistorTapeStereo": {
+      "name": "Transistor Tape (Maestro EP)",
+      "type": 5,
+      "extra_fields": [
+        "@trails"
+      ],
+      "params": [
+        "Time",
+        "Feedback",
+        "Mix",
+        "WowFlutter",
+        "Spread",
+        "Scale",
+        "Level",
+        "SyncSelect1",
+        "TempoSync1",
+        "Headroom"
+      ],
+      "units": {
+        "Time": "0-1",
+        "Feedback": "0-1",
+        "Mix": "0-1",
+        "Level": "dB"
+      }
+    }
   },
   "reverb": {
-    "HD2_ReverbGanymedeStereo": {"name": "Ganymede (shimmer)", "type": 5, "extra_fields": ["@trails"], "params": ["Mix", "Modulation", "Tone", "Decay", "Predelay", "Level"]},
-    "HD2_ReverbSearchlightsStereo": {"name": "Searchlights (modulated ambient)", "type": 5, "extra_fields": ["@trails"], "params": ["Mix", "Intensity", "Speed", "Modulation", "Spread", "Decay", "Predelay", "LowCut", "HighCut", "Level"], "units": {"LowCut": "Hz", "HighCut": "Hz"}}
+    "HD2_ReverbGanymedeStereo": {
+      "name": "Ganymede (shimmer)",
+      "type": 5,
+      "extra_fields": [
+        "@trails"
+      ],
+      "params": [
+        "Mix",
+        "Modulation",
+        "Tone",
+        "Decay",
+        "Predelay",
+        "Level"
+      ]
+    },
+    "HD2_ReverbSearchlightsStereo": {
+      "name": "Searchlights (modulated ambient)",
+      "type": 5,
+      "extra_fields": [
+        "@trails"
+      ],
+      "params": [
+        "Mix",
+        "Intensity",
+        "Speed",
+        "Modulation",
+        "Spread",
+        "Decay",
+        "Predelay",
+        "LowCut",
+        "HighCut",
+        "Level"
+      ],
+      "units": {
+        "LowCut": "Hz",
+        "HighCut": "Hz"
+      }
+    }
   },
   "utility": {
-    "HD2_VolPanVolStereo": {"name": "Volume Pedal", "type": 0, "params": ["Pedal", "VolumeTaper"]},
-    "HD2_WahThroatyStereo": {"name": "Wah (Throaty)", "type": 0, "params": ["FcHigh", "FcLow", "Pedal", "Level", "Mix"]},
-    "HD2_WahFasselStereo": {"name": "Wah (Fassel)", "type": 0, "params": ["FcHigh", "FcLow", "Pedal", "Level", "Mix"]},
-    "HD2_FXLoopStereo1_2": {"name": "Stereo FX Loop", "type": 5, "extra_fields": ["@trails"], "params": ["Return", "Send", "Mix"]},
-    "HD2_FXLoopMono1": {"name": "Mono FX Loop", "type": 5, "params": ["Return", "Send", "Mix"]}
+    "HD2_VolPanVolStereo": {
+      "name": "Volume Pedal",
+      "type": 0,
+      "params": [
+        "Pedal",
+        "VolumeTaper"
+      ]
+    },
+    "HD2_WahThroatyStereo": {
+      "name": "Wah (Throaty)",
+      "type": 0,
+      "params": [
+        "FcHigh",
+        "FcLow",
+        "Pedal",
+        "Level",
+        "Mix"
+      ]
+    },
+    "HD2_WahFasselStereo": {
+      "name": "Wah (Fassel)",
+      "type": 0,
+      "params": [
+        "FcHigh",
+        "FcLow",
+        "Pedal",
+        "Level",
+        "Mix"
+      ]
+    },
+    "HD2_FXLoopStereo1_2": {
+      "name": "Stereo FX Loop",
+      "type": 5,
+      "extra_fields": [
+        "@trails"
+      ],
+      "params": [
+        "Return",
+        "Send",
+        "Mix"
+      ]
+    },
+    "HD2_FXLoopMono1": {
+      "name": "Mono FX Loop",
+      "type": 5,
+      "params": [
+        "Return",
+        "Send",
+        "Mix"
+      ]
+    }
   },
   "io": {
-    "input_gate": {"path": "dsp0.input", "params": ["noiseGate", "decay", "threshold"], "units": {"noiseGate": "bool", "decay": "0-1", "threshold": "dB e.g. -56"}},
-    "output": {"path": "dsp0.output", "params": ["pan", "gain"], "units": {"pan": "0-1 (0.5=center)", "gain": "dB"}}
+    "input_gate": {
+      "path": "dsp0.input",
+      "params": [
+        "noiseGate",
+        "decay",
+        "threshold"
+      ],
+      "units": {
+        "noiseGate": "bool",
+        "decay": "0-1",
+        "threshold": "dB e.g. -56"
+      }
+    },
+    "output": {
+      "path": "dsp0.output",
+      "params": [
+        "pan",
+        "gain"
+      ],
+      "units": {
+        "pan": "0-1 (0.5=center)",
+        "gain": "dB"
+      }
+    }
   }
 }
