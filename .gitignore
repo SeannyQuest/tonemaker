@@ -4,3 +4,10 @@ __pycache__/
 
 # claude-flow local state (churn, not source)
 .claude-flow/
+
+# python build/venv artifacts
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/

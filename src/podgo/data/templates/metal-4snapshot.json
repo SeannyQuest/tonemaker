@@ -1,0 +1,21 @@
+{
+  "name": "Metal 4-Snap",
+  "blocks": [
+    {"model": "HD2_VolPanVolStereo", "position": 0},
+    {"model": "HD2_DistScream808Mono", "position": 1, "enabled": false, "params": {"Gain": 0.2, "Tone": 0.55, "Level": 0.8}},
+    {"model": "HD2_AmpCaliRectifire", "position": 2, "params": {"Drive": 0.6, "Bass": 0.5, "Mid": 0.45, "Treble": 0.6, "Presence": 0.5, "Master": 0.5, "ChVol": 0.85}},
+    {"model": "HD2_CabMicIr_4x12CaliV30", "position": 3, "params": {"LowCut": 90, "HighCut": 7500, "Position": 0.4, "Mic": 1, "Angle": 45, "Distance": 2, "Level": 0}},
+    {"model": "HD2_EQ_STATIC_ParametricStereo", "position": 4, "params": {"LowCut": 20, "HighCut": 10000, "MidFreq": 3000, "MidGain": -2, "Level": 0}},
+    {"model": "HD2_Chorus70sChorusStereo", "position": 5, "enabled": false, "params": {"Mix": 0.3, "Level": 0}},
+    {"model": "HD2_DelayTransistorTapeStereo", "position": 6, "enabled": false, "params": {"Time": 0.42, "Feedback": 0.35, "Mix": 0.2, "Level": 0}},
+    {"model": "HD2_ReverbGanymedeStereo", "position": 7, "params": {"Mix": 0.3, "Decay": 0.6, "Level": 0}}
+  ],
+  "input": {"noiseGate": true, "threshold": -58, "decay": 0.3},
+  "output": {"gain": 6},
+  "snapshots": [
+    {"name": "Clean",     "bypass": {"block1": false, "block5": true, "block6": true, "block7": true}, "params": {"block2": {"Drive": 0.1, "ChVol": 1.0}, "block7": {"Mix": 0.4}}},
+    {"name": "Rhythm",    "bypass": {"block1": true, "block5": false, "block6": false, "block7": true}, "params": {"block2": {"Drive": 0.7, "ChVol": 0.85}, "block7": {"Mix": 0.15}}},
+    {"name": "Lead",      "bypass": {"block1": true, "block5": false, "block6": true, "block7": true}, "params": {"block2": {"Drive": 0.75, "ChVol": 0.9}, "block7": {"Mix": 0.35}}},
+    {"name": "Breakdown", "bypass": {"block1": true, "block5": false, "block6": false, "block7": false}, "params": {"block2": {"Drive": 0.78, "ChVol": 0.85}, "block7": {"Mix": 0.0}}}
+  ]
+}
