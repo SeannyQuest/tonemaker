@@ -14,9 +14,9 @@ A guitarist describes a tone, Claude hands back a `.pgp` file they drag into POD
    - `knowledge/models.json`  ← all models, by name
    - `knowledge/example-simple.json`  ← a complete single-sound preset (structural template)
    - `knowledge/example-4snapshot.json`  ← a complete 4-snapshot preset (advanced template)
-   - `knowledge/tone-guide.md`  ← artist/genre starting points
-4. That's it. Start a chat in the project and try: *"Give me a doomy downtuned tone in drop G#,
-   playing through headphones, kind of Loathe-ish."*
+   - `knowledge/tone-guide.md`  ← genre-by-genre starting points
+4. That's it. Start a chat in the project and try: *"Give me a warm blues lead with a bit of
+   delay,"* or *"an ambient clean with shimmer for headphones."*
 
 ## How someone uses it (end-user flow)
 
