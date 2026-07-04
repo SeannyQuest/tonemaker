@@ -123,6 +123,25 @@
     border: 1px solid var(--line); border-radius: 9px; padding: 12px 14px; }
   .import-tip b { color: var(--ink); }
 
+  .lib-intro { margin: 0 0 16px; color: var(--ink-soft); font-size: .9rem; max-width: 62ch; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chip { border: 1px solid var(--line); background: var(--panel-2); color: var(--ink-soft);
+    border-radius: 999px; padding: 6px 13px; font: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; }
+  .chip[aria-selected="true"] { background: var(--accent); color: #1a1206; border-color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 14px; }
+  .card { border: 1px solid var(--line); background: var(--panel-2); border-radius: 11px; padding: 15px 16px;
+    display: flex; flex-direction: column; gap: 8px; }
+  .card h3 { margin: 0; font-size: 1.02rem; display: flex; align-items: center; gap: 8px; }
+  .genre-chip { font-size: .66rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700;
+    color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius: 5px; padding: 2px 6px; }
+  .card p { margin: 0; font-size: .85rem; color: var(--ink-soft); line-height: 1.45; flex: 1; }
+  .card .meta { font-family: var(--mono); font-size: .74rem; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .card .meta .ok { color: var(--ok); }
+  .card .actions { display: flex; gap: 8px; margin-top: 4px; }
+  .card .actions button { flex: 1; font-size: .84rem; padding: 9px 10px; margin-top: 0; }
+  .card-chain { margin-top: 4px; }
   footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
     color: var(--ink-soft); font-size: .82rem; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
   footer .spacer { flex: 1; }
@@ -139,18 +158,26 @@
     <button class="ghost" id="themeBtn" type="button">Theme</button>
   </header>
 
-  <p class="lede">Build and check Line 6 POD Go tones right here. Paste what your AI gave you, open one
-    of your presets, or dial one up by hand. It's <b>checked before you download</b> so it imports first
-    try, and <b>nothing ever leaves your device</b>.</p>
+  <p class="lede">Line 6 POD Go tones, ready to use. Grab a <b>ready-made tone</b>, describe your own to
+    <b>any AI</b>, or open one of your presets to check it. Everything is <b>verified before you download</b>
+    so it imports first try, and <b>nothing ever leaves your device</b>.</p>
 
   <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" id="tab-ai" type="button">From your AI</button>
+    <button class="tab" role="tab" aria-selected="true" id="tab-lib" type="button">Tone library</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-ai" type="button">From your AI</button>
     <button class="tab" role="tab" aria-selected="false" id="tab-open" type="button">Open a preset</button>
-    <button class="tab" role="tab" aria-selected="false" id="tab-quick" type="button">Quick build</button>
   </div>
 
+  <!-- TONE LIBRARY -->
+  <section class="panel" id="p-lib">
+    <p class="lib-intro">Ready-made, fully dialed tones. Full chains — boost, amp, cab, EQ, effects, gate —
+      not just a knob. Pick one, download, drag it into POD Go Edit. No AI, no account.</p>
+    <div class="chips" id="libFilter" role="tablist" aria-label="Filter by genre"></div>
+    <div class="grid" id="libGrid"></div>
+  </section>
+
   <!-- FROM YOUR AI -->
-  <section class="panel" id="p-ai">
+  <section class="panel" id="p-ai" hidden>
     <label class="field-label" for="spec">Paste the tone your AI gave you</label>
     <textarea id="spec" spellcheck="false" placeholder='{ "name": "Doom Cave", "blocks": [ ... ] }  — paste the whole reply; we find the JSON.'></textarea>
     <p class="hint">No spec yet? Ask any AI for a POD Go tone using the <a id="gpLink" href="#">cheat sheet</a>,
@@ -168,39 +195,6 @@
     <div class="result" id="res-open"></div>
   </section>
 
-  <!-- QUICK BUILD -->
-  <section class="panel" id="p-quick" hidden>
-    <div class="row">
-      <div>
-        <label class="field-label" for="qname">Preset name</label>
-        <input type="text" id="qname" value="My Tone" />
-      </div>
-    </div>
-    <div class="row" style="margin-top:14px">
-      <div>
-        <label class="field-label" for="qamp">Amp</label>
-        <select id="qamp"></select>
-      </div>
-      <div>
-        <label class="field-label" for="qcab">Cab</label>
-        <select id="qcab"></select>
-      </div>
-    </div>
-    <div class="row" style="margin-top:14px">
-      <div>
-        <label class="field-label" for="qdrive">Gain</label>
-        <div class="slider-wrap"><input type="range" id="qdrive" min="0" max="1" step="0.01" value="0.5" />
-          <span class="slider-val" id="qdriveVal">0.50</span></div>
-      </div>
-      <div>
-        <label class="field-label" for="qrev">Reverb</label>
-        <select id="qrev"></select>
-      </div>
-    </div>
-    <button class="btn" id="buildQuick" type="button">Build &amp; check</button>
-    <div class="result" id="res-quick"></div>
-  </section>
-
   <footer>
     <a href="https://github.com/SeannyQuest/tonemaker" target="_blank" rel="noopener">GitHub</a>
     <a href="https://github.com/SeannyQuest/tonemaker/tree/main/claude-project" target="_blank" rel="noopener">Claude Project</a>
@@ -215,6 +209,7 @@
 <script>
 window.MODELS = /*__MODELS__*/ null;
 window.BLOCKS = /*__BLOCKS__*/ null;
+window.LIBRARY = /*__LIBRARY__*/ null;
 TM.setData(window.MODELS, window.BLOCKS);
 (function () {
   "use strict";
@@ -229,7 +224,7 @@ TM.setData(window.MODELS, window.BLOCKS);
   });
 
   /* tabs */
-  const tabs = [["tab-ai", "p-ai"], ["tab-open", "p-open"], ["tab-quick", "p-quick"]];
+  const tabs = [["tab-lib", "p-lib"], ["tab-ai", "p-ai"], ["tab-open", "p-open"]];
   tabs.forEach(([t, p]) => $(t).addEventListener("click", () => {
     tabs.forEach(([t2, p2]) => {
       $(t2).setAttribute("aria-selected", String(t2 === t));
@@ -357,37 +352,64 @@ TM.setData(window.MODELS, window.BLOCKS);
     r.readAsText(f);
   }
 
-  /* mode: quick build */
-  function fillSelect(sel, cat, prefixNames) {
-    const entries = MODELS[cat] || {};
-    Object.keys(entries).filter((k) => k.startsWith("HD2_") && k in BLOCKS).forEach((id) => {
-      const o = document.createElement("option"); o.value = id; o.textContent = entries[id].name || id; sel.appendChild(o);
+  /* mode: tone library */
+  const LIB = window.LIBRARY || [];
+  const GENRE_ORDER = ["Metal", "Ambient", "Classic", "Artist"];
+  const genresPresent = GENRE_ORDER.filter((g) => LIB.some((t) => t.genre === g));
+  let activeGenre = "All";
+
+  function snapshotNames(doc) {
+    const tone = TM.toneOf(doc), names = [];
+    for (let i = 0; i < 4; i++) {
+      const s = tone["snapshot" + i];
+      if (s && s["@name"] && !/^Snapshot \d$/.test(s["@name"])) names.push(s["@name"]);
+    }
+    return names;
+  }
+  function downloadDoc(doc, filename) {
+    const blob = new Blob([TM.presetToText(doc)], { type: "application/octet-stream" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = filename.replace(/[^\w .-]/g, "_") + ".pgp"; a.click(); URL.revokeObjectURL(a.href);
+  }
+
+  function renderChips() {
+    const box = $("libFilter"); box.innerHTML = "";
+    ["All", ...genresPresent].forEach((g) => {
+      const b = document.createElement("button"); b.className = "chip"; b.type = "button";
+      b.textContent = g; b.setAttribute("aria-selected", String(g === activeGenre));
+      b.addEventListener("click", () => { activeGenre = g; renderChips(); renderGrid(); });
+      box.appendChild(b);
     });
   }
-  fillSelect($("qamp"), "amp");
-  fillSelect($("qcab"), "cab");
-  const revSel = $("qrev"); const none = document.createElement("option"); none.value = ""; none.textContent = "None"; revSel.appendChild(none);
-  fillSelect(revSel, "reverb");
-  // sensible defaults if present
-  const setDefault = (sel, id) => { if ([...sel.options].some((o) => o.value === id)) sel.value = id; };
-  setDefault($("qamp"), "HD2_AmpCaliRectifire");
-  setDefault($("qcab"), "HD2_CabMicIr_4x12CaliV30");
-  setDefault(revSel, "HD2_ReverbGanymedeStereo");
-  $("qdrive").addEventListener("input", () => $("qdriveVal").textContent = (+$("qdrive").value).toFixed(2));
-
-  $("buildQuick").addEventListener("click", () => {
-    const blocks = [
-      { model: "HD2_VolPanVolStereo", position: 0 },
-      { model: $("qamp").value, position: 2, params: { Drive: +$("qdrive").value } },
-      { model: $("qcab").value, position: 3, params: { Level: 0 } },
-      { model: "HD2_EQ_STATIC_ParametricStereo", position: 4, params: { Level: 0 } },
-    ];
-    if (revSel.value) blocks.push({ model: revSel.value, position: 7, params: { Mix: 0.3 } });
-    const spec = { name: $("qname").value || "My Tone",
-      input: { noiseGate: true, threshold: -58, decay: 0.3 }, output: { gain: 6 }, blocks };
-    try { render("res-quick", TM.buildAndValidate(spec), spec.name); }
-    catch (e) { render("res-quick", { error: e.message }); }
-  });
+  function renderGrid() {
+    const grid = $("libGrid"); grid.innerHTML = "";
+    LIB.filter((t) => activeGenre === "All" || t.genre === activeGenre).forEach((t) => {
+      const card = document.createElement("div"); card.className = "card";
+      const nBlocks = TM.chain(t.doc).filter((r) => r.model !== "(empty)").length;
+      const snaps = snapshotNames(t.doc);
+      const clean = TM.validateDoc(t.doc).errors.length === 0;
+      const h = document.createElement("h3");
+      h.innerHTML = esc(t.name) + '<span class="genre-chip">' + esc(t.genre) + "</span>";
+      const p = document.createElement("p"); p.textContent = t.blurb;
+      const meta = document.createElement("div"); meta.className = "meta";
+      meta.innerHTML = nBlocks + " blocks"
+        + (snaps.length ? " · " + esc(snaps.join(" / ")) : "")
+        + (clean ? ' · <span class="ok">✓ verified</span>' : "");
+      const actions = document.createElement("div"); actions.className = "actions";
+      const dl = document.createElement("button"); dl.className = "btn"; dl.textContent = "Download .pgp";
+      dl.addEventListener("click", () => downloadDoc(t.doc, t.name));
+      const view = document.createElement("button"); view.className = "ghost"; view.textContent = "View chain";
+      const chainHost = document.createElement("div"); chainHost.className = "card-chain";
+      view.addEventListener("click", () => {
+        if (chainHost.firstChild) { chainHost.innerHTML = ""; view.textContent = "View chain"; }
+        else { chainHost.appendChild(chainEl(t.doc)); view.textContent = "Hide chain"; }
+      });
+      actions.append(dl, view);
+      card.append(h, p, meta, actions, chainHost);
+      grid.appendChild(card);
+    });
+  }
+  renderChips(); renderGrid();
 })();
 </script>
 </body>

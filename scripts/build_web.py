@@ -22,13 +22,15 @@ def main():
     core = read(ROOT, "web", "core.js")
     models = read(DATA, "models.json").strip()
     blocks = read(DATA, "blocks.json").strip()
+    library = read(ROOT, "web", "library.json").strip()
 
     out = (template
            .replace("/*__CORE_JS__*/", core)
            .replace("/*__MODELS__*/ null", models)
-           .replace("/*__BLOCKS__*/ null", blocks))
+           .replace("/*__BLOCKS__*/ null", blocks)
+           .replace("/*__LIBRARY__*/ null", library))
 
-    for marker in ("/*__CORE_JS__*/", "/*__MODELS__*/", "/*__BLOCKS__*/"):
+    for marker in ("/*__CORE_JS__*/", "/*__MODELS__*/", "/*__BLOCKS__*/", "/*__LIBRARY__*/"):
         if marker in out:
             raise SystemExit(f"injection marker not replaced: {marker}")
 
