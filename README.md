@@ -9,7 +9,22 @@ interface, but its preset files (`.pgp`) are editable JSON, so this tool reads, 
 > trademarks of their respective owners. Works only on your own unencrypted exports; DRM (`hxmp`)
 > commercial packs are detected and refused.
 
-## Install
+## ▶ Try it now — no install, no signup
+
+**[seannyquest.github.io/tonemaker](https://seannyquest.github.io/tonemaker/)** — the full builder in
+your browser. Nothing is uploaded; it all runs on your machine. Three tabs:
+
+- **Tone library** — ready-made, fully dialed tones across clean, blues, rock, country, jazz, funk,
+  surf, ambient and metal. Filter by genre, download, drag into POD Go Edit. No AI, no account.
+- **From your AI** — copy the cheat sheet, paste it into any LLM (free ChatGPT, Gemini, Claude…),
+  describe a tone, paste the reply back, and it builds the preset. The cheat sheet keeps the AI from
+  inventing model names that won't load.
+- **Open a preset** — drag in one of your own `.pgp` files to see its full chain and check it.
+
+Every preset is validated before you download it, so it imports first try. The command-line package
+below is the same engine for people who prefer a terminal.
+
+## Install (command line)
 
 ```bash
 pip install tonemaker
