@@ -6,7 +6,10 @@ an installed wheel/zip. Python 3.9+ (importlib.resources.files).
 import json
 from importlib.resources import files
 
-_DATA = files("tonemaker.data")
+# Anchor on the tonemaker package (which has __init__.py) and descend into data/.
+# Using files("tonemaker.data") directly fails on Python 3.9 when data/ is a
+# namespace package (spec.origin is None); this form resolves the same everywhere.
+_DATA = files("tonemaker") / "data"
 
 
 def data_path(*parts):
