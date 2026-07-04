@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tonemaker — POD Go tones in your browser</title>
+<meta name="description" content="Build and check Line 6 POD Go presets in your browser. Nothing is uploaded. Unofficial." />
+<style>
+  :root {
+    --bg: #f3ede1; --panel: #fbf7ef; --panel-2: #efe7d7; --ink: #241d14; --ink-soft: #6a5f4e;
+    --line: #ddd2bd; --accent: #c8781f; --accent-glow: rgba(232,150,58,.35);
+    --ok: #2f8f63; --ok-bg: rgba(84,185,138,.14); --warn: #b6802a; --warn-bg: rgba(214,160,60,.16);
+    --err: #c23c34; --err-bg: rgba(224,85,76,.12);
+    --mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --radius: 10px; --maxw: 960px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14100c; --panel: #1e1810; --panel-2: #251d12; --ink: #f2ead9; --ink-soft: #a99a80;
+      --line: #352a1c; --accent: #e8963a; --accent-glow: rgba(232,150,58,.45);
+      --ok: #54b98a; --ok-bg: rgba(84,185,138,.12); --warn: #d6a03c; --warn-bg: rgba(214,160,60,.12);
+      --err: #e0554c; --err-bg: rgba(224,85,76,.12);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f3ede1; --panel: #fbf7ef; --panel-2: #efe7d7; --ink: #241d14; --ink-soft: #6a5f4e;
+    --line: #ddd2bd; --accent: #c8781f; --accent-glow: rgba(232,150,58,.35);
+    --ok: #2f8f63; --ok-bg: rgba(84,185,138,.14); --warn: #b6802a; --warn-bg: rgba(214,160,60,.16);
+    --err: #c23c34; --err-bg: rgba(224,85,76,.12);
+  }
+  :root[data-theme="dark"] {
+    --bg: #14100c; --panel: #1e1810; --panel-2: #251d12; --ink: #f2ead9; --ink-soft: #a99a80;
+    --line: #352a1c; --accent: #e8963a; --accent-glow: rgba(232,150,58,.45);
+    --ok: #54b98a; --ok-bg: rgba(84,185,138,.12); --warn: #d6a03c; --warn-bg: rgba(214,160,60,.12);
+    --err: #e0554c; --err-bg: rgba(224,85,76,.12);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans);
+    line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px 64px; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+
+  header { padding: 28px 0 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .lamp { width: 13px; height: 13px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 10px 2px var(--accent-glow), inset 0 0 3px rgba(0,0,0,.3); flex: none; }
+  .brand { font-family: var(--mono); font-weight: 700; font-size: 1.35rem; letter-spacing: -.02em; }
+  .brand small { color: var(--ink-soft); font-weight: 500; }
+  .spacer { flex: 1; }
+  .ghost { background: transparent; border: 1px solid var(--line); color: var(--ink-soft);
+    border-radius: 8px; padding: 7px 11px; font: inherit; font-size: .82rem; cursor: pointer; }
+  .ghost:hover { border-color: var(--accent); color: var(--ink); }
+
+  .lede { color: var(--ink-soft); max-width: 60ch; margin: 4px 0 22px; }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  .tabs { display: flex; gap: 4px; background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 10px; padding: 4px; width: fit-content; margin-bottom: 18px; flex-wrap: wrap; }
+  .tab { border: 0; background: transparent; color: var(--ink-soft); font: inherit; font-weight: 600;
+    font-size: .9rem; padding: 8px 15px; border-radius: 7px; cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--panel); color: var(--ink);
+    box-shadow: 0 1px 0 var(--line), 0 0 0 1px var(--line); }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 20px; }
+  .field-label { font-size: .78rem; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--ink-soft); font-weight: 700; margin-bottom: 8px; display: block; }
+  textarea, input[type="text"], select {
+    width: 100%; background: var(--bg); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 8px; padding: 11px 12px; font-family: var(--mono); font-size: .88rem; }
+  textarea { min-height: 168px; resize: vertical; }
+  textarea:focus, input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .hint { font-size: .82rem; color: var(--ink-soft); margin-top: 8px; }
+
+  .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end; }
+  .row > div { flex: 1 1 180px; }
+  .slider-wrap { display: flex; align-items: center; gap: 10px; }
+  input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .slider-val { font-family: var(--mono); font-size: .85rem; min-width: 2.5em; text-align: right;
+    font-variant-numeric: tabular-nums; }
+
+  .btn { margin-top: 16px; background: var(--accent); color: #1a1206; border: 0; border-radius: 9px;
+    padding: 12px 20px; font: inherit; font-weight: 700; font-size: .95rem; cursor: pointer;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.06), 0 6px 18px -8px var(--accent-glow); }
+  .btn:hover { filter: brightness(1.05); }
+  .btn:active { transform: translateY(1px); }
+
+  .drop { border: 1.5px dashed var(--line); border-radius: var(--radius); padding: 34px 20px;
+    text-align: center; color: var(--ink-soft); cursor: pointer; transition: border-color .15s, background .15s; }
+  .drop.hot { border-color: var(--accent); background: var(--warn-bg); color: var(--ink); }
+  .drop b { color: var(--ink); }
+
+  /* result: rack-unit status strip + chain readout */
+  .result { margin-top: 20px; display: none; }
+  .result.show { display: block; }
+  .status { display: flex; align-items: center; gap: 10px; border-radius: 9px; padding: 11px 14px;
+    font-weight: 600; border: 1px solid var(--line); }
+  .status .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .status.ok { background: var(--ok-bg); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 30%, transparent); }
+  .status.ok .dot { background: var(--ok); box-shadow: 0 0 8px 1px var(--ok); }
+  .status.warn { background: var(--warn-bg); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+  .status.warn .dot { background: var(--warn); }
+  .status.err { background: var(--err-bg); color: var(--err); border-color: color-mix(in srgb, var(--err) 30%, transparent); }
+  .status.err .dot { background: var(--err); }
+
+  .issues { list-style: none; margin: 10px 0 0; padding: 0; font-family: var(--mono); font-size: .82rem; }
+  .issues li { padding: 3px 0; color: var(--ink-soft); }
+  .issues li.e { color: var(--err); }
+
+  .chain { margin-top: 16px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
+  .chain-row { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: baseline;
+    padding: 9px 13px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: .84rem; }
+  .chain-row:first-child { border-top: 0; }
+  .chain-row .pos { color: var(--ink-soft); }
+  .chain-row .nm { color: var(--ink); }
+  .chain-row .nm small { color: var(--ink-soft); }
+  .chain-row .st { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; }
+  .chain-row .st.on { color: var(--ok); } .chain-row .st.off { color: var(--ink-soft); }
+  .dl-row { display: flex; gap: 12px; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+  .dl-row input { flex: 1 1 220px; }
+
+  .import-tip { margin-top: 14px; font-size: .85rem; color: var(--ink-soft); background: var(--panel-2);
+    border: 1px solid var(--line); border-radius: 9px; padding: 12px 14px; }
+  .import-tip b { color: var(--ink); }
+
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--ink-soft); font-size: .82rem; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  footer .spacer { flex: 1; }
+  .trademark { flex-basis: 100%; margin-top: 6px; opacity: .8; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="lamp" aria-hidden="true"></span>
+    <span class="brand">tonemaker <small>· POD Go</small></span>
+    <span class="spacer"></span>
+    <button class="ghost" id="themeBtn" type="button">Theme</button>
+  </header>
+
+  <p class="lede">Build and check Line 6 POD Go tones right here. Paste what your AI gave you, open one
+    of your presets, or dial one up by hand. It's <b>checked before you download</b> so it imports first
+    try, and <b>nothing ever leaves your device</b>.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" id="tab-ai" type="button">From your AI</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-open" type="button">Open a preset</button>
+    <button class="tab" role="tab" aria-selected="false" id="tab-quick" type="button">Quick build</button>
+  </div>
+
+  <!-- FROM YOUR AI -->
+  <section class="panel" id="p-ai">
+    <label class="field-label" for="spec">Paste the tone your AI gave you</label>
+    <textarea id="spec" spellcheck="false" placeholder='{ "name": "Doom Cave", "blocks": [ ... ] }  — paste the whole reply; we find the JSON.'></textarea>
+    <p class="hint">No spec yet? Ask any AI for a POD Go tone using the <a id="gpLink" href="#">cheat sheet</a>,
+      or use the tonemaker Claude Project. Then paste its answer here.</p>
+    <button class="btn" id="buildAi" type="button">Build &amp; check</button>
+    <div class="result" id="res-ai"></div>
+  </section>
+
+  <!-- OPEN A PRESET -->
+  <section class="panel" id="p-open" hidden>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Open a .pgp preset">
+      <b>Drop a .pgp file here</b><br />or click to choose one of your POD Go exports
+      <input type="file" id="file" accept=".pgp,application/json" hidden />
+    </div>
+    <div class="result" id="res-open"></div>
+  </section>
+
+  <!-- QUICK BUILD -->
+  <section class="panel" id="p-quick" hidden>
+    <div class="row">
+      <div>
+        <label class="field-label" for="qname">Preset name</label>
+        <input type="text" id="qname" value="My Tone" />
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div>
+        <label class="field-label" for="qamp">Amp</label>
+        <select id="qamp"></select>
+      </div>
+      <div>
+        <label class="field-label" for="qcab">Cab</label>
+        <select id="qcab"></select>
+      </div>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <div>
+        <label class="field-label" for="qdrive">Gain</label>
+        <div class="slider-wrap"><input type="range" id="qdrive" min="0" max="1" step="0.01" value="0.5" />
+          <span class="slider-val" id="qdriveVal">0.50</span></div>
+      </div>
+      <div>
+        <label class="field-label" for="qrev">Reverb</label>
+        <select id="qrev"></select>
+      </div>
+    </div>
+    <button class="btn" id="buildQuick" type="button">Build &amp; check</button>
+    <div class="result" id="res-quick"></div>
+  </section>
+
+  <footer>
+    <a href="https://github.com/SeannyQuest/tonemaker" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/SeannyQuest/tonemaker/tree/main/claude-project" target="_blank" rel="noopener">Claude Project</a>
+    <span class="spacer"></span>
+    <span id="modelCount"></span>
+    <span class="trademark">Unofficial — not affiliated with or endorsed by Line 6 / Yamaha Guitar Group.
+      POD Go and Helix are trademarks of their respective owners. Runs entirely in your browser; DRM packs are refused.</span>
+  </footer>
+</div>
+
+<script>/*__CORE_JS__*/</script>
+<script>
+window.MODELS = /*__MODELS__*/ null;
+window.BLOCKS = /*__BLOCKS__*/ null;
+TM.setData(window.MODELS, window.BLOCKS);
+(function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+
+  /* theme toggle */
+  const root = document.documentElement;
+  $("themeBtn").addEventListener("click", () => {
+    const cur = root.getAttribute("data-theme")
+      || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    root.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+  });
+
+  /* tabs */
+  const tabs = [["tab-ai", "p-ai"], ["tab-open", "p-open"], ["tab-quick", "p-quick"]];
+  tabs.forEach(([t, p]) => $(t).addEventListener("click", () => {
+    tabs.forEach(([t2, p2]) => {
+      $(t2).setAttribute("aria-selected", String(t2 === t));
+      $(p2).hidden = (p2 !== p);
+    });
+  }));
+
+  /* model count + cheat-sheet link */
+  const libCount = Object.keys(TM.buildIndex()).length;
+  $("modelCount").textContent = libCount + " verified models";
+  $("gpLink").addEventListener("click", (e) => { e.preventDefault(); copyCheatSheet(); });
+
+  function copyCheatSheet() {
+    // compact model list + minimal spec instructions for pasting into any AI
+    const lines = ["You build Line 6 POD Go presets. Reply ONLY with a JSON tone spec like:",
+      '{"name":"My Tone","blocks":[{"model":"HD2_...","position":0,"params":{}}],"output":{"gain":6}}',
+      "Use ONLY these exact model ids (pick by the name in parentheses):", ""];
+    for (const cat in MODELS) {
+      if (cat.startsWith("_") || typeof MODELS[cat] !== "object") continue;
+      const ids = Object.keys(MODELS[cat]).filter((k) => k.startsWith("HD2_"));
+      if (!ids.length) continue;
+      lines.push("# " + cat);
+      ids.forEach((id) => lines.push(id + "  (" + (MODELS[cat][id].name || "") + ")"));
+      lines.push("");
+    }
+    navigator.clipboard.writeText(lines.join("\n")).then(
+      () => flash($("gpLink"), "copied cheat sheet!"),
+      () => alert("Copy failed — select the text manually."));
+  }
+  function flash(el, msg) { const t = el.textContent; el.textContent = msg; setTimeout(() => (el.textContent = t), 1600); }
+
+  /* shared result renderer */
+  function render(target, res, defaultName) {
+    const box = $(target); box.className = "result show"; box.innerHTML = "";
+    if (res.error) {
+      box.appendChild(statusEl("err", res.error)); return;
+    }
+    const { doc, errors, warnings } = res;
+    const cls = errors.length ? "err" : (warnings.length ? "warn" : "ok");
+    const label = errors.length ? "Won't import — fix these first"
+      : (warnings.length ? "Ready, with notes" : "Ready to import");
+    box.appendChild(statusEl(cls, label));
+    if (errors.length || warnings.length) {
+      const ul = document.createElement("ul"); ul.className = "issues";
+      errors.forEach((e) => { const li = document.createElement("li"); li.className = "e"; li.textContent = "✕ " + e; ul.appendChild(li); });
+      warnings.forEach((w) => { const li = document.createElement("li"); li.textContent = "! " + w; ul.appendChild(li); });
+      box.appendChild(ul);
+    }
+    box.appendChild(chainEl(doc));
+    if (!errors.length) box.appendChild(downloadEl(doc, defaultName));
+    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  function statusEl(cls, text) {
+    const d = document.createElement("div"); d.className = "status " + cls;
+    const dot = document.createElement("span"); dot.className = "dot";
+    const s = document.createElement("span"); s.textContent = text;
+    d.append(dot, s); return d;
+  }
+  function chainEl(doc) {
+    const wrap = document.createElement("div"); wrap.className = "chain";
+    TM.chain(doc).forEach((r) => {
+      if (r.model === "(empty)") return;
+      const row = document.createElement("div"); row.className = "chain-row";
+      const info = TM.buildIndex()[r.model];
+      const nm = (info && info.name) ? info.name : r.model;
+      const pc = Object.keys(r.params).length;
+      row.innerHTML = '<span class="pos">' + r.position + '</span>'
+        + '<span class="nm">' + esc(nm) + ' <small>' + esc(r.model) + (pc ? " · " + pc + " params" : "") + '</small></span>'
+        + '<span class="st ' + (r.enabled ? "on" : "off") + '">' + (r.enabled ? "on" : "byp") + '</span>';
+      wrap.appendChild(row);
+    });
+    return wrap;
+  }
+  function downloadEl(doc, defaultName) {
+    const wrap = document.createElement("div");
+    const dl = document.createElement("div"); dl.className = "dl-row";
+    const nameIn = document.createElement("input"); nameIn.type = "text";
+    nameIn.value = (doc.data.meta.name || defaultName || "tone");
+    const btn = document.createElement("button"); btn.className = "btn"; btn.style.marginTop = "0";
+    btn.textContent = "Download .pgp";
+    btn.addEventListener("click", () => {
+      doc.data.meta.name = nameIn.value || "tone";
+      const blob = new Blob([TM.presetToText(doc)], { type: "application/octet-stream" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+      a.download = (nameIn.value || "tone").replace(/[^\w .-]/g, "_") + ".pgp";
+      a.click(); URL.revokeObjectURL(a.href);
+    });
+    dl.append(nameIn, btn); wrap.appendChild(dl);
+    const tip = document.createElement("div"); tip.className = "import-tip";
+    tip.innerHTML = "<b>To use it:</b> open POD Go Edit, right-click an empty preset slot → Import, "
+      + "and choose the file you just downloaded (or drag it onto a slot).";
+    wrap.appendChild(tip);
+    return wrap;
+  }
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* mode: from your AI */
+  $("buildAi").addEventListener("click", () => {
+    const text = $("spec").value.trim();
+    if (!text) { render("res-ai", { error: "Paste the tone your AI gave you first." }); return; }
+    try {
+      const spec = TM.extractSpec(text);
+      render("res-ai", TM.buildAndValidate(spec), "AI Tone");
+    } catch (e) { render("res-ai", { error: e.message }); }
+  });
+
+  /* mode: open a preset */
+  const drop = $("drop"), fileIn = $("file");
+  drop.addEventListener("click", () => fileIn.click());
+  drop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileIn.click(); } });
+  drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("hot"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("hot"));
+  drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("hot");
+    if (e.dataTransfer.files[0]) readFile(e.dataTransfer.files[0]); });
+  fileIn.addEventListener("change", () => { if (fileIn.files[0]) readFile(fileIn.files[0]); });
+  function readFile(f) {
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const doc = TM.loadPreset(r.result);
+        const { errors, warnings } = TM.validateDoc(doc);
+        render("res-open", { doc, errors, warnings }, f.name.replace(/\.pgp$/i, ""));
+      } catch (e) { render("res-open", { error: e.message }); }
+    };
+    r.readAsText(f);
+  }
+
+  /* mode: quick build */
+  function fillSelect(sel, cat, prefixNames) {
+    const entries = MODELS[cat] || {};
+    Object.keys(entries).filter((k) => k.startsWith("HD2_") && k in BLOCKS).forEach((id) => {
+      const o = document.createElement("option"); o.value = id; o.textContent = entries[id].name || id; sel.appendChild(o);
+    });
+  }
+  fillSelect($("qamp"), "amp");
+  fillSelect($("qcab"), "cab");
+  const revSel = $("qrev"); const none = document.createElement("option"); none.value = ""; none.textContent = "None"; revSel.appendChild(none);
+  fillSelect(revSel, "reverb");
+  // sensible defaults if present
+  const setDefault = (sel, id) => { if ([...sel.options].some((o) => o.value === id)) sel.value = id; };
+  setDefault($("qamp"), "HD2_AmpCaliRectifire");
+  setDefault($("qcab"), "HD2_CabMicIr_4x12CaliV30");
+  setDefault(revSel, "HD2_ReverbGanymedeStereo");
+  $("qdrive").addEventListener("input", () => $("qdriveVal").textContent = (+$("qdrive").value).toFixed(2));
+
+  $("buildQuick").addEventListener("click", () => {
+    const blocks = [
+      { model: "HD2_VolPanVolStereo", position: 0 },
+      { model: $("qamp").value, position: 2, params: { Drive: +$("qdrive").value } },
+      { model: $("qcab").value, position: 3, params: { Level: 0 } },
+      { model: "HD2_EQ_STATIC_ParametricStereo", position: 4, params: { Level: 0 } },
+    ];
+    if (revSel.value) blocks.push({ model: revSel.value, position: 7, params: { Mix: 0.3 } });
+    const spec = { name: $("qname").value || "My Tone",
+      input: { noiseGate: true, threshold: -58, decay: 0.3 }, output: { gain: 6 }, blocks };
+    try { render("res-quick", TM.buildAndValidate(spec), spec.name); }
+    catch (e) { render("res-quick", { error: e.message }); }
+  });
+})();
+</script>
+</body>
+</html>
