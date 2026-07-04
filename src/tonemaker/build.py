@@ -27,7 +27,7 @@ def build_from_spec(spec, blocks=None):
     """Turn a tone spec (dict) into a preset doc. Raises ValueError on unknown/untemplated models."""
     blocks = blocks or _blocks()
     if "_shell" not in blocks:
-        raise ValueError("blocks.json has no _shell template — run `podgo harvest` on a real export")
+        raise ValueError("blocks.json has no _shell template — run `tonemaker harvest` on a real export")
 
     doc = copy.deepcopy(blocks["_shell"])
     doc["data"]["meta"]["name"] = spec["name"]

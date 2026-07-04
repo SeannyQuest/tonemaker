@@ -4,14 +4,14 @@
 > document into your LLM, then describe the guitar tone you want.
 
 You are helping design a tone for the **Line 6 POD Go** by producing data the
-`podgo` command-line tool can turn into an importable `.pgp` preset. Respond with
+`tonemaker` command-line tool can turn into an importable `.pgp` preset. Respond with
 **either** of these, and nothing that can't be run:
 
 1. **A tone spec** — a JSON object conforming to the schema below — which the user
-   saves as `tone.json` and builds with: `podgo build tone.json --out tone.pgp`
-2. **A sequence of `podgo set` / `podgo add` commands** against a named `.pgp` file.
+   saves as `tone.json` and builds with: `tonemaker build tone.json --out tone.pgp`
+2. **A sequence of `tonemaker set` / `tonemaker add` commands** against a named `.pgp` file.
 
-Either way, finish by telling the user to run `podgo validate tone.pgp` — this
+Either way, finish by telling the user to run `tonemaker validate tone.pgp` — this
 catches any wrong model id before they try to import it.
 
 ## The `.pgp` model (what you're editing)
@@ -1451,9 +1451,9 @@ catches any wrong model id before they try to import it.
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/SeannyQuest/podgo-tones/tone-spec.schema.json",
+  "$id": "https://github.com/SeannyQuest/tonemaker/tone-spec.schema.json",
   "title": "POD Go Tone Spec",
-  "description": "Declarative description of a POD Go preset that `podgo build` turns into an importable .pgp. Emitted by an LLM from the knowledge pack.",
+  "description": "Declarative description of a POD Go preset that `tonemaker build` turns into an importable .pgp. Emitted by an LLM from the knowledge pack.",
   "type": "object",
   "required": ["name", "blocks"],
   "additionalProperties": false,
@@ -1581,14 +1581,14 @@ A valid tone spec:
 }
 ```
 
-Then: `podgo build doom.json --out doom.pgp && podgo validate doom.pgp`, and import
+Then: `tonemaker build doom.json --out doom.pgp && tonemaker validate doom.pgp`, and import
 `doom.pgp` into POD Go Edit.
 
 ## CLI vocabulary
-- `podgo inspect <file>` — print the chain + params (add `--json` for structured output)
-- `podgo set <file> block2.Drive=0.62 output.gain=8 [--out <file>]` — edit params (validates first)
-- `podgo add <file> block1=HD2_DistScream808Mono [--out <file>]` — add/replace a block
-- `podgo build <spec.json> [--out <file>]` — build a full preset from a tone spec (validates first)
-- `podgo new [--template metal-4snapshot] [--out <file>]` — start from blank/template
-- `podgo validate <file>` — confirm it will import (run this before importing)
-- `podgo models [--category amp]` — list available model ids
+- `tonemaker inspect <file>` — print the chain + params (add `--json` for structured output)
+- `tonemaker set <file> block2.Drive=0.62 output.gain=8 [--out <file>]` — edit params (validates first)
+- `tonemaker add <file> block1=HD2_DistScream808Mono [--out <file>]` — add/replace a block
+- `tonemaker build <spec.json> [--out <file>]` — build a full preset from a tone spec (validates first)
+- `tonemaker new [--template metal-4snapshot] [--out <file>]` — start from blank/template
+- `tonemaker validate <file>` — confirm it will import (run this before importing)
+- `tonemaker models [--category amp]` — list available model ids

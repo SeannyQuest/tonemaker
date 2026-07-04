@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from podgo import engine
+from tonemaker import engine
 
 REF = glob.glob(os.path.join(os.path.dirname(__file__), "..", "reference", "*.pgp"))
 REF += glob.glob(os.path.join(os.path.dirname(__file__), "..", "examples", "*.pgp"))

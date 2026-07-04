@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/SeannyQuest/podgo-tones/tone-spec.schema.json",
+  "$id": "https://github.com/SeannyQuest/tonemaker/tone-spec.schema.json",
   "title": "POD Go Tone Spec",
-  "description": "Declarative description of a POD Go preset that `podgo build` turns into an importable .pgp. Emitted by an LLM from the knowledge pack.",
+  "description": "Declarative description of a POD Go preset that `tonemaker build` turns into an importable .pgp. Emitted by an LLM from the knowledge pack.",
   "type": "object",
   "required": ["name", "blocks"],
   "additionalProperties": false,

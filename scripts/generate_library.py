@@ -20,7 +20,7 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA = os.path.join(HERE, "..", "src", "podgo", "data")
+DATA = os.path.join(HERE, "..", "src", "tonemaker", "data")
 DEFAULT_APP = "/Applications/Line6/POD Go Edit.app"
 
 # .models filename -> (our category, export @type integer). Cross-checked against the

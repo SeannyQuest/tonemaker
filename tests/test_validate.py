@@ -2,7 +2,7 @@
 import copy
 import os
 
-from podgo import engine, validate
+from tonemaker import engine, validate
 
 REF = os.path.join(os.path.dirname(__file__), "..", "reference", "logic.pgp")
 

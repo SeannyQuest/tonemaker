@@ -1,6 +1,6 @@
 """Principle IV — the generated knowledge pack never names a model outside the library."""
-from podgo import context
-from podgo._resources import load_models
+from tonemaker import context
+from tonemaker._resources import load_models
 
 
 def _library_ids():

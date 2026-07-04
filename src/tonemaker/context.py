@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the LLM knowledge pack from the verified model library.
 
-`podgo context` prints this so a user can paste it into ANY LLM (Claude, ChatGPT,
+`tonemaker context` prints this so a user can paste it into ANY LLM (Claude, ChatGPT,
 local) and have it produce importable POD Go tones. It is GENERATED from models.json
 (Principle IV) — every model it names is one the tool actually supports, so it can
 never drift into describing gear that would fail to import.
@@ -17,14 +17,14 @@ _PREAMBLE = """\
 > document into your LLM, then describe the guitar tone you want.
 
 You are helping design a tone for the **Line 6 POD Go** by producing data the
-`podgo` command-line tool can turn into an importable `.pgp` preset. Respond with
+`tonemaker` command-line tool can turn into an importable `.pgp` preset. Respond with
 **either** of these, and nothing that can't be run:
 
 1. **A tone spec** — a JSON object conforming to the schema below — which the user
-   saves as `tone.json` and builds with: `podgo build tone.json --out tone.pgp`
-2. **A sequence of `podgo set` / `podgo add` commands** against a named `.pgp` file.
+   saves as `tone.json` and builds with: `tonemaker build tone.json --out tone.pgp`
+2. **A sequence of `tonemaker set` / `tonemaker add` commands** against a named `.pgp` file.
 
-Either way, finish by telling the user to run `podgo validate tone.pgp` — this
+Either way, finish by telling the user to run `tonemaker validate tone.pgp` — this
 catches any wrong model id before they try to import it.
 
 ## The `.pgp` model (what you're editing)
@@ -73,20 +73,20 @@ A valid tone spec:
 }
 ```
 
-Then: `podgo build doom.json --out doom.pgp && podgo validate doom.pgp`, and import
+Then: `tonemaker build doom.json --out doom.pgp && tonemaker validate doom.pgp`, and import
 `doom.pgp` into POD Go Edit.
 
 ## CLI vocabulary
 """
 
 _CLI = """\
-- `podgo inspect <file>` — print the chain + params (add `--json` for structured output)
-- `podgo set <file> block2.Drive=0.62 output.gain=8 [--out <file>]` — edit params (validates first)
-- `podgo add <file> block1=HD2_DistScream808Mono [--out <file>]` — add/replace a block
-- `podgo build <spec.json> [--out <file>]` — build a full preset from a tone spec (validates first)
-- `podgo new [--template metal-4snapshot] [--out <file>]` — start from blank/template
-- `podgo validate <file>` — confirm it will import (run this before importing)
-- `podgo models [--category amp]` — list available model ids
+- `tonemaker inspect <file>` — print the chain + params (add `--json` for structured output)
+- `tonemaker set <file> block2.Drive=0.62 output.gain=8 [--out <file>]` — edit params (validates first)
+- `tonemaker add <file> block1=HD2_DistScream808Mono [--out <file>]` — add/replace a block
+- `tonemaker build <spec.json> [--out <file>]` — build a full preset from a tone spec (validates first)
+- `tonemaker new [--template metal-4snapshot] [--out <file>]` — start from blank/template
+- `tonemaker validate <file>` — confirm it will import (run this before importing)
+- `tonemaker models [--category amp]` — list available model ids
 """
 
 

@@ -12,22 +12,22 @@ interface, but its preset files (`.pgp`) are editable JSON, so this tool reads, 
 ## Install
 
 ```bash
-pip install podgo-tones
+pip install tonemaker
 ```
 
 ## The LLM workflow (the point)
 
 ```bash
-podgo context | pbcopy          # copy the knowledge pack (macOS; use xclip/clip elsewhere)
+tonemaker context | pbcopy          # copy the knowledge pack (macOS; use xclip/clip elsewhere)
 ```
 
 1. Paste it into your LLM and describe a tone ("doomy, downtuned, big cave reverb").
-2. The LLM replies with a tone spec (JSON) or a set of `podgo` commands.
+2. The LLM replies with a tone spec (JSON) or a set of `tonemaker` commands.
 3. Build and check it, then import the `.pgp` into POD Go Edit:
 
 ```bash
-podgo build doom.json --out doom.pgp    # build from the spec the LLM gave you
-podgo validate doom.pgp                 # confirms it will import (no unrecognized models)
+tonemaker build doom.json --out doom.pgp    # build from the spec the LLM gave you
+tonemaker validate doom.pgp                 # confirms it will import (no unrecognized models)
 ```
 
 `validate` is the safety net: if the LLM invents a model id that POD Go wouldn't recognize, you find
@@ -36,15 +36,15 @@ out here — not when the device rejects the whole preset.
 ## Commands
 
 ```bash
-podgo inspect tone.pgp                              # show the full chain + params
-podgo set tone.pgp block2.Drive=0.62 output.gain=8  # edit params (validates before writing)
-podgo add tone.pgp block1=HD2_DistScream808Mono     # add/replace a block
-podgo build spec.json --out tone.pgp                # build a full preset from a tone spec
-podgo new --template metal-4snapshot --out t.pgp    # start from a template
-podgo validate tone.pgp                             # check it will import
-podgo models --category amp                         # list verified model ids
-podgo harvest ~/Downloads/MyExport.pgp              # extend the library from your own export
-podgo context                                       # emit the LLM knowledge pack
+tonemaker inspect tone.pgp                              # show the full chain + params
+tonemaker set tone.pgp block2.Drive=0.62 output.gain=8  # edit params (validates before writing)
+tonemaker add tone.pgp block1=HD2_DistScream808Mono     # add/replace a block
+tonemaker build spec.json --out tone.pgp                # build a full preset from a tone spec
+tonemaker new --template metal-4snapshot --out t.pgp    # start from a template
+tonemaker validate tone.pgp                             # check it will import
+tonemaker models --category amp                         # list verified model ids
+tonemaker harvest ~/Downloads/MyExport.pgp              # extend the library from your own export
+tonemaker context                                       # emit the LLM knowledge pack
 ```
 
 Import a `.pgp` into POD Go Edit by dragging it onto a slot (or right-click → Import).
@@ -64,7 +64,7 @@ The library is built only from real POD Go exports (never guessed). To add a mod
 know yet: add the block in POD Go Edit, export the preset, then:
 
 ```bash
-podgo harvest that-export.pgp     # adds the model's exact id + params (+ a build template)
+tonemaker harvest that-export.pgp     # adds the model's exact id + params (+ a build template)
 ```
 
 Contributions that widen coverage are welcome via PR.

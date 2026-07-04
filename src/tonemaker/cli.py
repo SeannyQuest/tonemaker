@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""podgo — command-line tool for editing POD Go .pgp presets, drivable by any LLM.
+"""tonemaker — command-line tool for editing POD Go .pgp presets, drivable by any LLM.
 
 Subcommands: inspect, set, add, build, new, validate, models, harvest, context.
-Run `podgo <cmd> --help` for details. Presets must be your own unencrypted exports;
+Run `tonemaker <cmd> --help` for details. Presets must be your own unencrypted exports;
 DRM (hxmp) presets are refused.
 """
 import argparse
@@ -177,7 +177,7 @@ def cmd_context(args):
 
 
 def build_parser():
-    p = argparse.ArgumentParser(prog="podgo", description=__doc__.splitlines()[0])
+    p = argparse.ArgumentParser(prog="tonemaker", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("inspect", help="print a preset's chain + params")
