@@ -109,18 +109,29 @@ def build(name, spec):
     if is_preamp:
         ampP = dict(ampP, Master=0.70)
     outgain = 12.0 if is_preamp else 6.0
-    # base controlled-param values = snapshot 0
-    ampP = dict(ampP, Drive=s0[2], ChVol=min(1.0, s0[3] + cbst))
+    # precompute per-snapshot control values. Clean snaps (low drive): pristine the
+    # amp gain, max channel volume, and add post-amp EQ makeup gain (block4 Level) so
+    # they're LOUDER without adding dirt (louder+cleaner at once).
+    adj = []
+    for (snapname, byp, drive, chvol, revmix, dlymix) in spec['snaps']:
+        is_clean = drive < 0.30
+        drv = 0.05 if drive < 0.20 else drive         # pristine the main clean snap
+        chv = 1.0 if is_clean else min(1.0, chvol + cbst)
+        eql = 8.0 if is_clean else 0.0                # dB makeup gain, clean only
+        adj.append(dict(name=snapname, byp=byp, drive=drv, chvol=chv,
+                        revmix=revmix, dlymix=dlymix, eql=eql))
+    a0 = adj[0]
+    ampP = dict(ampP, Drive=a0['drive'], ChVol=a0['chvol'])
     dsp0 = {
         'input': copy.deepcopy(INPUT_TMPL), 'output': copy.deepcopy(OUTPUT_TMPL),
         'block0': blk('HD2_VolPanVolStereo', 0, True, {}),
-        'block1': blk(preM, 1, bool(s0[1]['pre']), preP),
+        'block1': blk(preM, 1, bool(a0['byp']['pre']), preP),
         'block2': blk(ampM, 2, True, ampP),
         'block3': blk(cabM, 3, True, cabP),
-        'block4': blk('HD2_EQ_STATIC_ParametricStereo', 4, True, EQ),
-        'block5': blk('HD2_Chorus70sChorusStereo', 5, bool(s0[1]['chorus']), CHORUS),
-        'block6': blk('HD2_DelayTransistorTapeStereo', 6, bool(s0[1]['delay']), dict(DELAY, Mix=s0[5])),
-        'block7': blk('HD2_ReverbGanymedeStereo', 7, bool(s0[1]['reverb']), dict(spec['rv'], Mix=s0[4])),
+        'block4': blk('HD2_EQ_STATIC_ParametricStereo', 4, True, dict(EQ, Level=a0['eql'])),
+        'block5': blk('HD2_Chorus70sChorusStereo', 5, bool(a0['byp']['chorus']), CHORUS),
+        'block6': blk('HD2_DelayTransistorTapeStereo', 6, bool(a0['byp']['delay']), dict(DELAY, Mix=a0['dlymix'])),
+        'block7': blk('HD2_ReverbGanymedeStereo', 7, bool(a0['byp']['reverb']), dict(spec['rv'], Mix=a0['revmix'])),
         'block8': blk('HD2_WahThroatyStereo', 8, False, {}),
         'block9': blk('HD2_FXLoopStereo1_2', 9, False, {}),
     }
@@ -131,25 +142,28 @@ def build(name, spec):
     tone['controller'] = {'dsp0': {
         'block2': {'Drive': {'@min': 0, '@max': 1, '@controller': 11},
                    'ChVol': {'@min': 0, '@max': 1, '@controller': 11}},
+        'block4': {'Level': {'@min': -12, '@max': 12, '@controller': 11}},
         'block6': {'Mix': {'@min': 0, '@max': 1, '@controller': 11}},
         'block7': {'Mix': {'@min': 0, '@max': 1, '@controller': 11}},
     }}
     tone['footswitch'] = {'dsp0': {}}
     ledcolors = [10, 65280, 16744192, 255]
-    for i, (snapname, byp, drive, chvol, revmix, dlymix) in enumerate(spec['snaps']):
+    for i, a in enumerate(adj):
         sn = f'snapshot{i}'
+        byp = a['byp']
         tone[sn] = {
-            '@name': snapname, '@tempo': 120, '@valid': True,
+            '@name': a['name'], '@tempo': 120, '@valid': True,
             '@pedalstate': 2, '@ledcolor': ledcolors[i],
             'blocks': {'dsp0': {
                 'block0': True, 'block1': bool(byp['pre']), 'block2': True, 'block3': True,
                 'block4': True, 'block5': bool(byp['chorus']), 'block6': bool(byp['delay']),
                 'block7': bool(byp['reverb']), 'block8': False, 'block9': False}},
             'controllers': {'dsp0': {
-                'block2': {'Drive': {'@fs_enabled': False, '@value': drive},
-                           'ChVol': {'@fs_enabled': False, '@value': min(1.0, chvol + cbst)}},
-                'block6': {'Mix': {'@fs_enabled': False, '@value': dlymix}},
-                'block7': {'Mix': {'@fs_enabled': False, '@value': revmix}}}},
+                'block2': {'Drive': {'@fs_enabled': False, '@value': a['drive']},
+                           'ChVol': {'@fs_enabled': False, '@value': a['chvol']}},
+                'block4': {'Level': {'@fs_enabled': False, '@value': a['eql']}},
+                'block6': {'Mix': {'@fs_enabled': False, '@value': a['dlymix']}},
+                'block7': {'Mix': {'@fs_enabled': False, '@value': a['revmix']}}}},
         }
     tone['global'] = {'@model': '@global_params', '@cursor_group': 'block2',
                       '@pedalstate': 2, '@current_snapshot': 0, '@tempo': 120}
