@@ -22,7 +22,8 @@ layout: **Rhythm** (boost/drive off, reverb low) and **Lead** (boost on, reverb 
 
 ## Clean
 Sparkle and headroom. Great as a pedal platform.
-- **Amp**: US Deluxe Nrm or US Double Nrm — Drive ~2, Bass 4.5, Mid 5, Treble 6, Master 5.5
+- **Amp**: US Deluxe Nrm or US Double Nrm — Drive ~2, Bass 4.5, Mid 5, Treble 6, **Master ~9**
+  (on POD Go an amp's Master is the main level control — keep it high on cleans or the patch is quiet)
 - **Cab**: 1x12 US Deluxe or 2x12 Silver Bell
 - **Add**: Red Squeeze comp in front for evenness; '63 Spring or Plate reverb (Mix ~2)
 - **Pop/worship variant**: add a Trinity Chorus (Mix ~2.5) and a Plate reverb for polish.

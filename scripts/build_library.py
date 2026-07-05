@@ -41,7 +41,7 @@ TONES = [
      "ready, sits great in a mix.", {
         "name": "Sparkle Clean", "input": {"noiseGate": True, "threshold": -64, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.22, "Bass": 0.45, "Mid": 0.5, "Treble": 0.6, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.22, "Bass": 0.45, "Mid": 0.5, "Treble": 0.6, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_1x12USDeluxe", 3, {"Level": 0}),
             b("HD2_Reverb63SpringStereo", 7, {"Mix": 0.18, "Level": 0})]}),
 
@@ -50,7 +50,7 @@ TONES = [
         "name": "Pop Sparkle", "input": {"noiseGate": True, "threshold": -64, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
             b("HD2_CompressorRedSqueezeMono", 1),
-            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.18, "Bass": 0.45, "Mid": 0.5, "Treble": 0.62, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.18, "Bass": 0.45, "Mid": 0.5, "Treble": 0.62, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12SilverBell", 3, {"Level": 0}),
             b("HD2_ChorusTrinityChorusStereo", 5, {"Mix": 0.25, "Level": 0}),
             b("HD2_ReverbPlateStereo", 7, {"Mix": 0.2, "Level": 0})]}),
@@ -60,7 +60,7 @@ TONES = [
         "name": "Funk Rhythm", "input": {"noiseGate": True, "threshold": -60, "decay": 0.25}, "output": {"gain": 4},
         "blocks": [VOL,
             b("HD2_CompressorRedSqueezeMono", 1),
-            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.2, "Bass": 0.4, "Mid": 0.5, "Treble": 0.65, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.2, "Bass": 0.4, "Mid": 0.5, "Treble": 0.65, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12SilverBell", 3, {"Level": 0}),
             b("HD2_MM4AnalogChorus", 5, {"Mix": 0.18, "Level": 0}),
             b("HD2_ReverbRoomStereo", 7, {"Mix": 0.12, "Level": 0})]}),
@@ -69,7 +69,7 @@ TONES = [
      "and single-note lines.", {
         "name": "Jazz Box", "input": {"noiseGate": True, "threshold": -62, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpJazzRivet120", 2, {"Drive": 0.15, "Bass": 0.55, "Mid": 0.55, "Treble": 0.4, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpJazzRivet120", 2, {"Drive": 0.15, "Bass": 0.55, "Mid": 0.55, "Treble": 0.4, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12JazzRivet", 3, {"HighCut": 6000, "Level": 0}),
             b("HD2_ReverbRoomStereo", 7, {"Mix": 0.14, "Level": 0})]}),
 
@@ -78,7 +78,7 @@ TONES = [
         "name": "Country Twang", "input": {"noiseGate": True, "threshold": -60, "decay": 0.25}, "output": {"gain": 4},
         "blocks": [VOL,
             b("HD2_CompressorRedSqueezeMono", 1),
-            b("HD2_AmpTweedBluesBrt", 2, {"Drive": 0.3, "Bass": 0.45, "Mid": 0.5, "Treble": 0.65, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpTweedBluesBrt", 2, {"Drive": 0.3, "Bass": 0.45, "Mid": 0.5, "Treble": 0.65, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_1x12USDeluxe", 3, {"Level": 0}),
             b("HD2_DelayVintageDigitalStereoV2", 6, {"Time": 0.12, "Feedback": 0.15, "Mix": 0.18, "Level": 0}),
             b("HD2_Reverb63SpringStereo", 7, {"Mix": 0.16, "Level": 0})]}),
@@ -87,7 +87,7 @@ TONES = [
      "sway. Reverb-tank surf.", {
         "name": "Surf Dream", "input": {"noiseGate": False, "threshold": -70, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpUSDoubleVib", 2, {"Drive": 0.22, "Bass": 0.5, "Mid": 0.5, "Treble": 0.6, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDoubleVib", 2, {"Drive": 0.22, "Bass": 0.5, "Mid": 0.5, "Treble": 0.6, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12SilverBell", 3, {"Level": 0}),
             b("HD2_TremoloOpticalTremStereo", 5),
             b("HD2_ReverbSpringStereo", 7, {"Mix": 0.38, "Level": 0})]}),
@@ -97,7 +97,7 @@ TONES = [
         "name": "Blues Breakup", "input": {"noiseGate": True, "threshold": -62, "decay": 0.3}, "output": {"gain": 5},
         "blocks": [VOL,
             b("HD2_DistMinotaurMono", 1, {"Gain": 0.4, "Tone": 0.55, "Level": 0.7}, enabled=False),
-            b("HD2_AmpTweedBluesNrm", 2, {"Drive": 0.5, "Bass": 0.5, "Mid": 0.6, "Treble": 0.55, "Master": 0.6, "ChVol": 0.9}),
+            b("HD2_AmpTweedBluesNrm", 2, {"Drive": 0.5, "Bass": 0.5, "Mid": 0.6, "Treble": 0.55, "Master": 0.8, "ChVol": 0.9}),
             b("HD2_CabMicIr_4x10TweedP10R", 3, {"Level": 0}),
             b("HD2_Reverb63SpringStereo", 7, {"Mix": 0.2, "Level": 0})],
         "snapshots": [
@@ -109,7 +109,7 @@ TONES = [
         "name": "Blues Lead", "input": {"noiseGate": True, "threshold": -60, "decay": 0.3}, "output": {"gain": 5},
         "blocks": [VOL,
             b("HD2_DistMinotaurMono", 1, {"Gain": 0.5, "Tone": 0.6, "Level": 0.75}),
-            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.45, "Bass": 0.5, "Mid": 0.6, "Treble": 0.58, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDeluxeNrm", 2, {"Drive": 0.45, "Bass": 0.5, "Mid": 0.6, "Treble": 0.58, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_1x12USDeluxe", 3, {"Level": 0}),
             b("HD2_DelayTransistorTapeStereo", 6, {"Time": 0.35, "Feedback": 0.25, "Mix": 0.2, "Level": 0}),
             b("HD2_ReverbRoomStereo", 7, {"Mix": 0.2, "Level": 0})]}),
@@ -118,7 +118,7 @@ TONES = [
      "little room. The bread and butter.", {
         "name": "Classic Crunch", "input": {"noiseGate": True, "threshold": -60, "decay": 0.3}, "output": {"gain": 5},
         "blocks": [VOL,
-            b("HD2_AmpBritPlexiNrm", 2, {"Drive": 0.6, "Bass": 0.5, "Mid": 0.6, "Treble": 0.6, "Master": 0.6, "ChVol": 0.9}),
+            b("HD2_AmpBritPlexiNrm", 2, {"Drive": 0.6, "Bass": 0.5, "Mid": 0.6, "Treble": 0.6, "Master": 0.8, "ChVol": 0.9}),
             b("HD2_CabMicIr_4x12BritV30", 3, {"Level": 0}),
             b("HD2_ReverbRoomStereo", 7, {"Mix": 0.12, "Level": 0})]}),
 
@@ -126,7 +126,7 @@ TONES = [
      "snapshots so you can switch on the fly.", {
         "name": "Arena Lead", "input": {"noiseGate": True, "threshold": -58, "decay": 0.3}, "output": {"gain": 5},
         "blocks": [VOL,
-            b("HD2_AmpBrit2204", 2, {"Drive": 0.62, "Bass": 0.5, "Mid": 0.6, "Treble": 0.6, "Master": 0.6, "ChVol": 0.9}),
+            b("HD2_AmpBrit2204", 2, {"Drive": 0.62, "Bass": 0.5, "Mid": 0.6, "Treble": 0.6, "Master": 0.8, "ChVol": 0.9}),
             b("HD2_CabMicIr_4x12BritV30", 3, {"Level": 0}),
             b("HD2_DelayTransistorTapeStereo", 6, {"Time": 0.4, "Feedback": 0.3, "Mix": 0.22, "Level": 0}),
             b("HD2_ReverbHallStereo", 7, {"Mix": 0.2, "Level": 0})],
@@ -138,7 +138,7 @@ TONES = [
      "arpeggios and driving eighths.", {
         "name": "Indie Jangle", "input": {"noiseGate": True, "threshold": -62, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpEssexA30", 2, {"Drive": 0.32, "Bass": 0.45, "Mid": 0.5, "Treble": 0.62, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpEssexA30", 2, {"Drive": 0.32, "Bass": 0.45, "Mid": 0.5, "Treble": 0.62, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12BlueBell", 3, {"Level": 0}),
             b("HD2_MM4AnalogChorus", 5, {"Mix": 0.2, "Level": 0}),
             b("HD2_Reverb63SpringStereo", 7, {"Mix": 0.16, "Level": 0})]}),
@@ -147,7 +147,7 @@ TONES = [
      "chords turn into a pad.", {
         "name": "Ambient Shimmer", "input": {"noiseGate": True, "threshold": -64, "decay": 0.3}, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.18, "Bass": 0.45, "Mid": 0.5, "Treble": 0.6, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.18, "Bass": 0.45, "Mid": 0.5, "Treble": 0.6, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12SilverBell", 3, {"Level": 0}),
             b("HD2_DelayVintageDigitalStereoV2", 6, {"Mix": 0.3, "Level": 0}),
             b("HD2_ReverbGanymedeStereo", 7, {"Mix": 0.45, "Decay": 0.8, "Level": 0})]}),
@@ -156,7 +156,7 @@ TONES = [
      "let it ring out forever.", {
         "name": "Post-Rock Swell", "input": OPEN, "output": {"gain": 4},
         "blocks": [VOL,
-            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.2, "Bass": 0.5, "Mid": 0.5, "Treble": 0.55, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.2, "Bass": 0.5, "Mid": 0.5, "Treble": 0.55, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_2x12SilverBell", 3, {"Level": 0}),
             b("HD2_DelayTransistorTapeStereo", 6, {"Time": 0.5, "Feedback": 0.45, "Mix": 0.35, "Level": 0}),
             b("HD2_ReverbCaveStereo", 7, {"Mix": 0.55, "Decay": 0.9, "Level": 0})]}),
@@ -166,7 +166,7 @@ TONES = [
         "name": "Shoegaze Wash", "input": OPEN, "output": {"gain": 4},
         "blocks": [VOL,
             b("HD2_DistTriangleFuzzMono", 1, {"Sustain": 0.5, "Tone": 0.45, "Level": 0.6}),
-            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.25, "Bass": 0.5, "Mid": 0.5, "Treble": 0.55, "Master": 0.55, "ChVol": 0.85}),
+            b("HD2_AmpUSDoubleNrm", 2, {"Drive": 0.25, "Bass": 0.5, "Mid": 0.5, "Treble": 0.55, "Master": 0.9, "ChVol": 0.85}),
             b("HD2_CabMicIr_4x12CaliV30", 3, {"Level": 0}),
             b("HD2_Chorus70sChorusStereo", 5, {"Mix": 0.4, "Level": 0}),
             b("HD2_DelayTransistorTapeStereo", 6, {"Time": 0.45, "Feedback": 0.4, "Mix": 0.3, "Level": 0}),
@@ -177,7 +177,7 @@ TONES = [
         "name": "Modern High Gain", "input": {"noiseGate": True, "threshold": -54, "decay": 0.2}, "output": {"gain": 5},
         "blocks": [VOL,
             b("HD2_DistScream808Mono", 1, {"Gain": 0.15, "Tone": 0.6, "Level": 0.85}),
-            b("HD2_AmpGermanUbersonic", 2, {"Drive": 0.6, "Bass": 0.45, "Mid": 0.4, "Treble": 0.6, "Master": 0.5, "ChVol": 0.85}),
+            b("HD2_AmpGermanUbersonic", 2, {"Drive": 0.6, "Bass": 0.45, "Mid": 0.4, "Treble": 0.6, "Master": 0.65, "ChVol": 0.85}),
             b("HD2_Cab4x12Greenback20", 3, {"Level": 0}),
             b("HD2_EQ_STATIC_ParametricStereo", 4, {"MidFreq": 700, "MidGain": -2, "Level": 0}),
             b("HD2_ReverbGanymedeStereo", 7, {"Mix": 0.15, "Decay": 0.4, "Level": 0})],
@@ -190,7 +190,7 @@ TONES = [
         "name": "Metalcore", "input": {"noiseGate": True, "threshold": -54, "decay": 0.2}, "output": {"gain": 5},
         "blocks": [VOL,
             b("HD2_DistScream808Mono", 1, {"Gain": 0.2, "Tone": 0.55, "Level": 0.8}),
-            b("HD2_AmpRevvGenRed", 2, {"Drive": 0.62, "Bass": 0.5, "Mid": 0.55, "Treble": 0.6, "Master": 0.5, "ChVol": 0.85}),
+            b("HD2_AmpRevvGenRed", 2, {"Drive": 0.62, "Bass": 0.5, "Mid": 0.55, "Treble": 0.6, "Master": 0.65, "ChVol": 0.85}),
             b("HD2_CabMicIr_4x12CaliV30", 3, {"Level": 0}),
             b("HD2_EQ_STATIC_ParametricStereo", 4, {"Level": 0}),
             b("HD2_ReverbGanymedeStereo", 7, {"Mix": 0.15, "Decay": 0.4, "Level": 0})],
