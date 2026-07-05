@@ -18,6 +18,27 @@ from tonemaker import build, validate  # noqa: E402
 from tonemaker._resources import data_path  # noqa: E402
 
 BLK = json.loads(data_path("blocks.json").read_text())
+_M = json.loads(data_path("models.json").read_text())
+AMPS = {mid for cat in ("amp", "preamp") for mid in _M.get(cat, {})}
+
+
+def set_levels(doc, genre):
+    """Central loudness policy. ChVol is the real level control on POD Go amps
+    (Master is power-amp breakup, not volume), so max ChVol and use a healthy
+    global output makeup. Reference patches that sound normal run Drive ~0.45 +
+    ChVol ~0.85 + Master ~1.0; clean library tones use low Drive, so they need
+    the makeup here. Metal is already hot from gain, so it gets less."""
+    g = doc["data"]["tone"]["dsp0"]
+    metal = genre == "Metal"
+    g["output"]["gain"] = 5 if metal else 9
+    for v in g.values():
+        if isinstance(v, dict) and v.get("@model") in AMPS:
+            v["ChVol"] = 1.0                    # channel volume = main level → full
+            v["Master"] = 0.5 if metal else 0.6  # power-amp breakup only; keep moderate
+        # open up cabs that default very dark so clean tones aren't muffled/quiet
+        if isinstance(v, dict) and str(v.get("@model", "")).startswith(("HD2_Cab", "HD2_CabMicIr")):
+            if isinstance(v.get("HighCut"), (int, float)) and v["HighCut"] <= 5000 and not metal:
+                v["HighCut"] = 9000.0
 
 
 def b(model, pos, params=None, enabled=True):
@@ -211,6 +232,7 @@ def main():
     lib = []
     for genre, name, blurb, spec in TONES:
         doc = build.build_from_spec(spec)
+        set_levels(doc, genre)
         errors, warnings = validate.validate_doc(doc, "raw")
         if errors:
             sys.exit(f"TONE {name} INVALID: {errors}")
