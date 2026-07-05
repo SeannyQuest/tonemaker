@@ -23,21 +23,30 @@ AMPS = {mid for cat in ("amp", "preamp") for mid in _M.get(cat, {})}
 
 
 def set_levels(doc, genre):
-    """Central loudness policy. ChVol is the real level control on POD Go amps
-    (Master is power-amp breakup, not volume), so max ChVol and use a healthy
-    global output makeup. Reference patches that sound normal run Drive ~0.45 +
-    ChVol ~0.85 + Master ~1.0; clean library tones use low Drive, so they need
-    the makeup here. Metal is already hot from gain, so it gets less."""
+    """Central level policy, grounded in a real good-level clean preset
+    (US Double: Drive 0.5, Master 1.0, Presence 0.68, ChVol 1.0, out.gain 7.4).
+
+    The quietness was never ChVol/output (those were already maxed) — it was the
+    amp dialed cold: near-zero Drive, low Master, and Presence defaulting to 0.0,
+    so the amp barely generated signal and no makeup could recover it. Fix by
+    driving the amp like a real patch. Metal already runs hot, so lower Master."""
     g = doc["data"]["tone"]["dsp0"]
     metal = genre == "Metal"
-    g["output"]["gain"] = 5 if metal else 9
+    g["output"]["gain"] = 5.0 if metal else 7.5
+    g["input"]["noiseGate"] = metal            # clean/low-gain patches don't need a gate sapping level
     for v in g.values():
-        if isinstance(v, dict) and v.get("@model") in AMPS:
-            v["ChVol"] = 1.0                    # channel volume = main level → full
-            v["Master"] = 0.5 if metal else 0.6  # power-amp breakup only; keep moderate
+        if not isinstance(v, dict):
+            continue
+        if v.get("@model") in AMPS:
+            v["ChVol"] = 1.0                       # channel volume (digital output level) → full
+            v["Master"] = 0.6 if metal else 1.0    # power-amp push; real cleans run this at 1.0
+            if "Presence" in v and v["Presence"] < 0.5:
+                v["Presence"] = 0.65               # never leave presence at the 0.0 default (dull/weak)
+            if not metal and v.get("Drive", 1) < 0.4:
+                v["Drive"] = 0.4                    # floor drive so clean patches make real signal
         # open up cabs that default very dark so clean tones aren't muffled/quiet
-        if isinstance(v, dict) and str(v.get("@model", "")).startswith(("HD2_Cab", "HD2_CabMicIr")):
-            if isinstance(v.get("HighCut"), (int, float)) and v["HighCut"] <= 5000 and not metal:
+        if str(v.get("@model", "")).startswith(("HD2_Cab", "HD2_CabMicIr")) and not metal:
+            if isinstance(v.get("HighCut"), (int, float)) and v["HighCut"] <= 5000:
                 v["HighCut"] = 9000.0
 
 
